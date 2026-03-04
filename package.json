@@ -9,8 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "flux-toast": "^1.0.2",
     "@tabler/icons-react": "^3.37.1",
+    "flux-toast": "1.0.2",
     "motion": "^12.34.3",
     "next": "16.1.6",
     "react": "19.2.3",
