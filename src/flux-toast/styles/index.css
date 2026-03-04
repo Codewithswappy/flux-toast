@@ -38,41 +38,41 @@
 
 [data-theme="dark"],
 .dark {
-  --flux-toast-bg: #1e1e2e;
-  --flux-toast-bg-hover: #232336;
-  --flux-toast-bg-footer: #181825;
-  --flux-toast-fg: #f8fafc;
-  --flux-toast-fg-secondary: #cbd5e1;
-  --flux-toast-fg-muted: #94a3b8;
-  --flux-toast-border: rgba(255, 255, 255, 0.1);
-  --flux-toast-border-btn: rgba(255, 255, 255, 0.15);
+  --flux-toast-bg: #18181b;
+  --flux-toast-bg-hover: #1f1f22;
+  --flux-toast-bg-footer: #09090b;
+  --flux-toast-fg: #fafafa;
+  --flux-toast-fg-secondary: #a1a1aa;
+  --flux-toast-fg-muted: #71717a;
+  --flux-toast-border: rgba(255, 255, 255, 0.08);
+  --flux-toast-border-btn: rgba(255, 255, 255, 0.12);
   --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
                         0 2px 8px rgba(0, 0, 0, 0.2);
   --flux-toast-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5),
                               0 4px 12px rgba(0, 0, 0, 0.3);
 
-  --flux-toast-badge-bg: #818cf8;
-  --flux-toast-badge-fg: #1e1e2e;
+  --flux-toast-badge-bg: #e4e4e7;
+  --flux-toast-badge-fg: #18181b;
 }
 
 /* Auto dark mode via system preference */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not(.light):not(:has(.dark)) {
-    --flux-toast-bg: #1e1e2e;
-    --flux-toast-bg-hover: #232336;
-    --flux-toast-bg-footer: #181825;
-    --flux-toast-fg: #f8fafc;
-    --flux-toast-fg-secondary: #cbd5e1;
-    --flux-toast-fg-muted: #94a3b8;
-    --flux-toast-border: rgba(255, 255, 255, 0.1);
-    --flux-toast-border-btn: rgba(255, 255, 255, 0.15);
+    --flux-toast-bg: #18181b;
+    --flux-toast-bg-hover: #1f1f22;
+    --flux-toast-bg-footer: #09090b;
+    --flux-toast-fg: #fafafa;
+    --flux-toast-fg-secondary: #a1a1aa;
+    --flux-toast-fg-muted: #71717a;
+    --flux-toast-border: rgba(255, 255, 255, 0.08);
+    --flux-toast-border-btn: rgba(255, 255, 255, 0.12);
     --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
                           0 2px 8px rgba(0, 0, 0, 0.2);
     --flux-toast-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5),
                                 0 4px 12px rgba(0, 0, 0, 0.3);
 
-    --flux-toast-badge-bg: #818cf8;
-    --flux-toast-badge-fg: #1e1e2e;
+    --flux-toast-badge-bg: #e4e4e7;
+    --flux-toast-badge-fg: #18181b;
   }
 }
 

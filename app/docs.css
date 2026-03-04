@@ -853,11 +853,12 @@
 
 .docs-mobile-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .docs-mobile-links a {
-  flex: 1;
+  flex: 1 1 calc(50% - 4px);
   text-align: center;
   padding: 8px 12px;
   background: var(--bg-subtle);

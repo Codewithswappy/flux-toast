@@ -195,6 +195,17 @@ export default function DocsLayout({
           <Link href="/docs" className="docs-active">
             Docs
           </Link>
+          <span className="w-px h-3.5 bg-zinc-200 dark:bg-zinc-800 mx-1 self-center" />
+          <a
+            href="https://github.com/Codewithswappy/flux-toast"
+            target="_blank"
+            rel="noopener"
+          >
+            GitHub
+          </a>
+          <a href="https://x.com/heyyswap" target="_blank" rel="noopener">
+            Twitter
+          </a>
         </nav>
         <button
           className="docs-search-trigger docs-desktop-only"
@@ -243,6 +254,16 @@ export default function DocsLayout({
               >
                 Docs
               </Link>
+              <a
+                href="https://github.com/Codewithswappy/flux-toast"
+                target="_blank"
+                rel="noopener"
+              >
+                GitHub
+              </a>
+              <a href="https://x.com/heyyswap" target="_blank" rel="noopener">
+                Twitter
+              </a>
             </div>
           </div>
           {SIDEBAR.map((s) => (

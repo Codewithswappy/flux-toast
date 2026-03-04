@@ -297,12 +297,20 @@ function Navbar({
             Docs
           </a>
           <a
-            href="https://github.com/flux-ui"
+            href="https://github.com/Codewithswappy/flux-toast"
             target="_blank"
             rel="noopener"
             className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors px-3 py-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
           >
             GitHub
+          </a>
+          <a
+            href="https://x.com/heyyswap"
+            target="_blank"
+            rel="noopener"
+            className="text-[13px] font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors px-3 py-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+          >
+            Twitter
           </a>
           <div className="ml-1 pl-2 border-l border-zinc-200 dark:border-zinc-800">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
@@ -685,7 +693,7 @@ function DemoContent() {
                   Docs
                 </a>
                 <a
-                  href="https://github.com/flux-ui"
+                  href="https://github.com/Codewithswappy/flux-toast"
                   target="_blank"
                   rel="noopener"
                   className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white transition-colors"
@@ -693,7 +701,27 @@ function DemoContent() {
                 >
                   GitHub
                 </a>
+                <a
+                  href="https://x.com/heyyswap"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white transition-colors"
+                  aria-label="Twitter"
+                >
+                  Twitter
+                </a>
               </div>
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                Built with love by{" "}
+                <a
+                  href="https://x.com/heyyswap"
+                  target="_blank"
+                  rel="noopener"
+                  className="hover:text-zinc-900 dark:hover:text-white underline decoration-zinc-300 dark:decoration-zinc-700 underline-offset-4"
+                >
+                  @heyyswap
+                </a>
+              </p>
               <p className="text-[11px] text-zinc-300 dark:text-zinc-800 pb-8">
                 MIT · TypeScript · React 18+
               </p>
