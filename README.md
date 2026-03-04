@@ -4,7 +4,7 @@
 
 Flux is a notification system designed for modern web applications. It provides a premium experience with advanced animations, zero-knowledge setup, and a developer-friendly API.
 
-[View Documentation](https://flux-toast.vercel.app/docs) · [View Demo](https://flux-toast.vercel.app/#demo)
+[View Documentation](https://flux.heyyswap.in/docs) · [View Demo](https://flux.heyyswap.in/#demo)
 
 ## Core Features
 
