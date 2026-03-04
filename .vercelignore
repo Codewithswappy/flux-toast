@@ -1,0 +1,8 @@
+src/
+README.md
+docs/
+.agents/
+.agent/
+**/*.tgz
+**/node_modules/
+**/dist/
