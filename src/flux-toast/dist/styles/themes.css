@@ -1,0 +1,127 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * flux-toast | Theme Presets
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Minimal Theme ───────────────────────────────────────────────────────── */
+
+[data-flux-theme="minimal"] {
+  --flux-toast-radius: 8px;
+  --flux-toast-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --flux-toast-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --flux-toast-padding: 12px 14px;
+}
+
+[data-flux-theme="minimal"] .flux-toast--success,
+[data-flux-theme="minimal"] .flux-toast--error,
+[data-flux-theme="minimal"] .flux-toast--warning,
+[data-flux-theme="minimal"] .flux-toast--info,
+[data-flux-theme="minimal"] .flux-toast--loading {
+  border-left-width: 2px;
+  background: var(--flux-toast-bg);
+}
+
+/* ─── Vibrant Theme ───────────────────────────────────────────────────────── */
+
+[data-flux-theme="vibrant"] {
+  --flux-toast-radius: 16px;
+  --flux-toast-shadow: 0 10px 40px rgba(0, 0, 0, 0.12),
+                        0 4px 16px rgba(0, 0, 0, 0.06);
+  --flux-toast-shadow-hover: 0 14px 48px rgba(0, 0, 0, 0.16),
+                              0 6px 20px rgba(0, 0, 0, 0.08);
+  --flux-toast-padding: 16px 18px;
+}
+
+[data-flux-theme="vibrant"] .flux-toast--success {
+  border-left: none;
+  border: 1px solid var(--flux-toast-success-border);
+  background: linear-gradient(
+    135deg,
+    var(--flux-toast-success-bg) 0%,
+    var(--flux-toast-bg) 60%,
+    var(--flux-toast-success-bg) 100%
+  );
+}
+
+[data-flux-theme="vibrant"] .flux-toast--error {
+  border-left: none;
+  border: 1px solid var(--flux-toast-error-border);
+  background: linear-gradient(
+    135deg,
+    var(--flux-toast-error-bg) 0%,
+    var(--flux-toast-bg) 60%,
+    var(--flux-toast-error-bg) 100%
+  );
+}
+
+[data-flux-theme="vibrant"] .flux-toast--warning {
+  border-left: none;
+  border: 1px solid var(--flux-toast-warning-border);
+  background: linear-gradient(
+    135deg,
+    var(--flux-toast-warning-bg) 0%,
+    var(--flux-toast-bg) 60%,
+    var(--flux-toast-warning-bg) 100%
+  );
+}
+
+[data-flux-theme="vibrant"] .flux-toast--info {
+  border-left: none;
+  border: 1px solid var(--flux-toast-info-border);
+  background: linear-gradient(
+    135deg,
+    var(--flux-toast-info-bg) 0%,
+    var(--flux-toast-bg) 60%,
+    var(--flux-toast-info-bg) 100%
+  );
+}
+
+[data-flux-theme="vibrant"] .flux-toast--loading {
+  border-left: none;
+  border: 1px solid var(--flux-toast-loading-border);
+  background: linear-gradient(
+    135deg,
+    var(--flux-toast-loading-bg) 0%,
+    var(--flux-toast-bg) 60%,
+    var(--flux-toast-loading-bg) 100%
+  );
+}
+
+/* ─── Glass Theme ─────────────────────────────────────────────────────────── */
+
+[data-flux-theme="glass"] {
+  --flux-toast-bg: rgba(255, 255, 255, 0.72);
+  --flux-toast-border: rgba(255, 255, 255, 0.3);
+  --flux-toast-radius: 16px;
+  --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-flux-theme="glass"]:not([data-theme="light"]) {
+    --flux-toast-bg: rgba(30, 30, 46, 0.72);
+    --flux-toast-border: rgba(255, 255, 255, 0.1);
+    --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+[data-theme="dark"][data-flux-theme="glass"] {
+  --flux-toast-bg: rgba(30, 30, 46, 0.72);
+  --flux-toast-border: rgba(255, 255, 255, 0.1);
+  --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+[data-flux-theme="glass"] .flux-toast {
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+}
+
+[data-flux-theme="glass"] .flux-toast--success,
+[data-flux-theme="glass"] .flux-toast--error,
+[data-flux-theme="glass"] .flux-toast--warning,
+[data-flux-theme="glass"] .flux-toast--info,
+[data-flux-theme="glass"] .flux-toast--loading {
+  border-left-width: 3px;
+  background: var(--flux-toast-bg);
+}

@@ -1,0 +1,402 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * flux-toast | Core Styles | Minimal Design
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/* ─── CSS Custom Properties (Design Tokens) ───────────────────────────────── */
+
+:root,
+[data-theme="light"] {
+  --flux-toast-bg: #ffffff;
+  --flux-toast-bg-hover: #ffffff;
+  --flux-toast-bg-footer: #f9fafb;
+  --flux-toast-fg: #0f172a;
+  --flux-toast-fg-secondary: #64748b;
+  --flux-toast-fg-muted: #94a3b8;
+  --flux-toast-border: rgba(0, 0, 0, 0.08);
+  --flux-toast-border-btn: #e2e8f0;
+  --flux-toast-shadow: 0 4px 24px rgba(0, 0, 0, 0.06),
+                        0 1px 3px rgba(0, 0, 0, 0.03);
+  --flux-toast-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.08),
+                              0 2px 6px rgba(0, 0, 0, 0.04);
+  --flux-toast-radius: 12px;
+  --flux-toast-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --flux-toast-z: 999999;
+  --flux-toast-width: 356px;
+
+  /* Type colors */
+  --flux-toast-success: #10b981;
+  --flux-toast-error: #ef4444;
+  --flux-toast-warning: #f59e0b;
+  --flux-toast-info: #6366f1;
+  --flux-toast-loading: #8b5cf6;
+
+  /* Badge */
+  --flux-toast-badge-bg: #6366f1;
+  --flux-toast-badge-fg: #ffffff;
+}
+
+[data-theme="dark"],
+.dark {
+  --flux-toast-bg: #1e1e2e;
+  --flux-toast-bg-hover: #232336;
+  --flux-toast-bg-footer: #181825;
+  --flux-toast-fg: #f8fafc;
+  --flux-toast-fg-secondary: #cbd5e1;
+  --flux-toast-fg-muted: #94a3b8;
+  --flux-toast-border: rgba(255, 255, 255, 0.1);
+  --flux-toast-border-btn: rgba(255, 255, 255, 0.15);
+  --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                        0 2px 8px rgba(0, 0, 0, 0.2);
+  --flux-toast-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5),
+                              0 4px 12px rgba(0, 0, 0, 0.3);
+
+  --flux-toast-badge-bg: #818cf8;
+  --flux-toast-badge-fg: #1e1e2e;
+}
+
+/* Auto dark mode via system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.light):not(:has(.dark)) {
+    --flux-toast-bg: #1e1e2e;
+    --flux-toast-bg-hover: #232336;
+    --flux-toast-bg-footer: #181825;
+    --flux-toast-fg: #f8fafc;
+    --flux-toast-fg-secondary: #cbd5e1;
+    --flux-toast-fg-muted: #94a3b8;
+    --flux-toast-border: rgba(255, 255, 255, 0.1);
+    --flux-toast-border-btn: rgba(255, 255, 255, 0.15);
+    --flux-toast-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                          0 2px 8px rgba(0, 0, 0, 0.2);
+    --flux-toast-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5),
+                                0 4px 12px rgba(0, 0, 0, 0.3);
+
+    --flux-toast-badge-bg: #818cf8;
+    --flux-toast-badge-fg: #1e1e2e;
+  }
+}
+
+/* ─── Viewport ────────────────────────────────────────────────────────────── */
+
+.flux-toast-viewport {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  z-index: var(--flux-toast-z);
+  pointer-events: none;
+  box-sizing: border-box;
+  max-height: 100dvh;
+  overflow: visible;
+  outline: none;
+}
+
+/* ─── Toast Container ─────────────────────────────────────────────────────── */
+
+.flux-toast {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--flux-toast-width);
+  background: var(--flux-toast-bg);
+  border: 1px solid var(--flux-toast-border);
+  border-radius: var(--flux-toast-radius);
+  box-shadow: var(--flux-toast-shadow);
+  font-family: var(--flux-toast-font);
+  pointer-events: all;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  will-change: transform, opacity;
+  overflow: hidden; /* clip footer and progress bar */
+}
+
+.flux-toast:hover {
+  box-shadow: var(--flux-toast-shadow-hover);
+}
+
+.flux-toast:focus-visible {
+  outline: 2px solid var(--flux-toast-info);
+  outline-offset: 2px;
+}
+
+.flux-toast:active {
+  cursor: grabbing;
+}
+
+/* ─── Pattern ─────────────────────────────────────────────────────────────── */
+
+.flux-toast-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .flux-toast-pattern {
+  opacity: 0.2;
+}
+
+.flux-toast-pattern-dot {
+  fill: var(--flux-toast-fg);
+  opacity: 0.2;
+}
+
+.flux-toast-pattern-line {
+  stroke: var(--flux-toast-fg);
+  stroke-width: 1px;
+  stroke-opacity: 0.06;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+
+.flux-toast-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  gap: 12px;
+}
+
+.flux-toast-title-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.flux-toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--flux-toast-fg);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* ─── Icon ────────────────────────────────────────────────────────────────── */
+
+.flux-toast-icon-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.flux-toast-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.flux-toast-icon--success { color: var(--flux-toast-success); }
+.flux-toast-icon--error { color: var(--flux-toast-error); }
+.flux-toast-icon--warning { color: var(--flux-toast-warning); }
+.flux-toast-icon--info { color: var(--flux-toast-info); }
+.flux-toast-icon--loading { color: var(--flux-toast-loading); }
+
+/* ─── Expand / Close Buttons ──────────────────────────────────────────────── */
+
+.flux-toast-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--flux-toast-fg-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.flux-toast-btn:hover {
+  color: var(--flux-toast-fg);
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.flux-toast-chevron-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.flux-toast-close-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* ─── Body (Description & Actions) ───────────────────────────────────────── */
+
+.flux-toast-body-wrapper {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.flux-toast-body {
+  padding: 0 14px 16px 46px; /* 14px + 20px(icon) + 12px(gap) = 46px */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flux-toast-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--flux-toast-fg-secondary);
+  word-break: break-word;
+}
+
+.flux-toast-action {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border: 1px solid var(--flux-toast-border-btn);
+  border-radius: 8px;
+  background: var(--flux-toast-bg);
+  color: var(--flux-toast-fg);
+  font-family: var(--flux-toast-font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.flux-toast-action:hover {
+  background: rgba(128, 128, 128, 0.05);
+  transform: translateY(-1px);
+}
+
+.flux-toast-action:active {
+  transform: scale(0.97);
+}
+
+/* ─── Footer & Timer ──────────────────────────────────────────────────────── */
+
+.flux-toast-footer-wrapper {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border-top: 1px solid var(--flux-toast-border);
+  background: var(--flux-toast-bg-footer);
+}
+
+.flux-toast-footer {
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--flux-toast-fg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flux-toast-timer-text {
+  flex: 1;
+}
+
+.flux-toast-timer-text strong {
+  color: var(--flux-toast-fg);
+  font-weight: 600;
+}
+
+.flux-toast-stop-btn {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--flux-toast-fg);
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.flux-toast-stop-btn:hover {
+  text-decoration: underline;
+}
+
+/* ─── Progress Bar ────────────────────────────────────────────────────────── */
+
+.flux-toast-progress-bar {
+  position: absolute;
+  z-index: 15;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--flux-toast-success);
+  transition: width 0.05s linear;
+}
+
+.flux-toast--success .flux-toast-progress-bar { background: var(--flux-toast-success); }
+.flux-toast--error .flux-toast-progress-bar { background: var(--flux-toast-error); }
+.flux-toast--warning .flux-toast-progress-bar { background: var(--flux-toast-warning); }
+.flux-toast--info .flux-toast-progress-bar { background: var(--flux-toast-info); }
+.flux-toast--loading .flux-toast-progress-bar { background: var(--flux-toast-loading); }
+.flux-toast--default .flux-toast-progress-bar { background: var(--flux-toast-fg); }
+
+
+/* ─── Badge (duplicate counter) ───────────────────────────────────────────── */
+
+.flux-toast-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 100px;
+  background: var(--flux-toast-badge-bg);
+  color: var(--flux-toast-badge-fg);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--flux-toast-font);
+  line-height: 1;
+}
+
+/* ─── Headless mode ───────────────────────────────────────────────────────── */
+
+.flux-toast--headless {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  pointer-events: all;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .flux-toast-viewport {
+    padding: 16px;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    align-items: stretch !important;
+  }
+
+  .flux-toast {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+  }
+}
+
+/* ─── Reduced Motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .flux-toast,
+  .flux-toast-btn,
+  .flux-toast-action,
+  .flux-toast-progress-bar {
+    transition: none !important;
+  }
+}
