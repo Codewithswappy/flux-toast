@@ -33,50 +33,80 @@
 
 ## Installation
 
-```bash
-npm install @flux-ui/toast motion zustand
-```
+The easiest way to get started is using our automated CLI tool. It handles dependencies and basic setup for you.
 
 ```bash
-yarn add @flux-ui/toast motion zustand
+npx flux-init init
 ```
+
+### Manual Installation
+
+If you prefer to install manually:
 
 ```bash
-pnpm add @flux-ui/toast motion zustand
+npm install flux-toast motion zustand
 ```
 
-## Quick Start
+## Quick Start (Next.js & React)
 
-### 1. Add the Provider
+Next.js uses **Server Components** by default. To use `flux-toast` in your `layout.tsx`, you should use a client-side wrapper.
+
+### 1. Create a Providers wrapper
+
+Create a new file `app/providers.tsx`:
 
 ```tsx
-// app/layout.tsx (Next.js App Router)
-import { ToastProvider, ToastViewport } from "@flux-ui/toast";
-import "@flux-ui/toast/styles";
+"use client";
+
+import { ToastProvider, ToastViewport } from "flux-toast";
+import "flux-toast/styles";
+
+export function Providers({ children }) {
+  return (
+    <ToastProvider>
+      {children}
+      <ToastViewport position="bottom-right" />
+    </ToastProvider>
+  );
+}
+```
+
+### 2. Wrap your Layout
+
+In your `app/layout.tsx`:
+
+```tsx
+import { Providers } from "./providers";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html>
       <body>
-        <ToastProvider>
-          {children}
-          <ToastViewport position="bottom-right" />
-        </ToastProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
 ```
 
-### 2. Show Toasts Anywhere
+### 3. Show Toasts Anywhere
+
+Make sure the file where you call `toast` has `"use client";` at the top.
 
 ```tsx
-import { toast } from "@flux-ui/toast";
+"use client";
+import { toast } from "flux-toast";
 
-function SaveButton() {
-  return <button onClick={() => toast.success("Profile saved!")}>Save</button>;
+export default function Page() {
+  return <button onClick={() => toast.success("It works!")}>Show Toast</button>;
 }
 ```
+
+function SaveButton() {
+return <button onClick={() => toast.success("Profile saved!")}>Save</button>;
+}
+
+````
 
 ## API Reference
 
@@ -95,7 +125,7 @@ toast({
   type: "success",
   duration: 5000,
 });
-```
+````
 
 ### `toast.success(message)`
 
@@ -312,7 +342,7 @@ Or with `data-theme` attribute:
 Import the themes CSS and use `data-flux-theme`:
 
 ```tsx
-import "@flux-ui/toast/themes";
+import "flux-toast/themes";
 
 // Then on any parent element:
 <div data-flux-theme="minimal">  {/* Clean, subtle */}
@@ -365,8 +395,10 @@ toast({
     <div style={{ display: "flex", gap: 12 }}>
       <img src="/avatar.png" width={40} height={40} />
       <div>
-        <strong>John Doe</strong>
-        <p>Sent you a message</p>
+        <strong className="flux-text-primary">John Doe</strong>
+        <p className="flux-text-secondary" style={{ margin: 0 }}>
+          Sent you a message
+        </p>
       </div>
     </div>
   ),
@@ -407,8 +439,8 @@ toast({
 
 ```tsx
 // app/layout.tsx
-import { ToastProvider, ToastViewport } from "@flux-ui/toast";
-import "@flux-ui/toast/styles";
+import { ToastProvider, ToastViewport } from "flux-toast";
+import "flux-toast/styles";
 
 export default function RootLayout({
   children,
@@ -431,7 +463,7 @@ export default function RootLayout({
 ```tsx
 // app/page.tsx
 "use client";
-import { toast } from "@flux-ui/toast";
+import { toast } from "flux-toast";
 
 export default function Page() {
   return <button onClick={() => toast.success("It works!")}>Show Toast</button>;
@@ -450,4 +482,4 @@ export default function Page() {
 
 ## License
 
-MIT © [flux-ui](https://github.com/flux-ui)
+MIT © [Codewithswappy](https://github.com/Codewithswappy/flux-toast)

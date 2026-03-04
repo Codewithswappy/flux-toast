@@ -12,22 +12,20 @@ import {
   IconPalette,
   IconCopy,
   IconTrash,
-  IconBrandGithub,
   IconArrowRight,
   IconBook,
-  IconSend,
-  IconNote,
   IconMaximize,
 } from "@tabler/icons-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { FluxLogo } from "@/components/FluxLogo";
 import {
-  toast,
   ToastProvider,
   ToastViewport,
+  toast,
   useToast,
   type ToastPosition,
-} from "@flux-ui/toast";
+} from "flux-toast";
+import "flux-toast/styles";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
@@ -108,7 +106,7 @@ function HeroCodeBlock() {
             <span className="token-property">toast</span>{" "}
             <span className="token-punctuation">{"}"}</span>{" "}
             <span className="token-keyword">from</span>{" "}
-            <span className="token-string">&quot;@flux-ui/toast&quot;</span>
+            <span className="token-string">&quot;flux-toast&quot;</span>
           </motion.div>
           <motion.div variants={item} className="mt-3">
             <span className="token-comment">
@@ -169,7 +167,7 @@ function InstallCommand() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText("npm install @flux-ui/toast");
+    navigator.clipboard.writeText("npx flux-init init");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, []);
@@ -185,7 +183,7 @@ function InstallCommand() {
     >
       <span className="text-zinc-500 select-none font-mono">$</span>
       <span className="text-zinc-200 dark:text-zinc-300 font-mono">
-        npm install <span className="text-zinc-400">@flux-ui/toast</span>
+        npx <span className="text-zinc-400">flux-init init</span>
       </span>
       <span className="ml-1 text-[11px] text-zinc-600 group-hover:text-zinc-400 transition-colors">
         {copied ? "✓" : "Copy"}
@@ -412,7 +410,7 @@ function DemoContent() {
             Update Available
           </h4>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            flux-toast v2.0 is out with new features.
+            flux-toast is out with new features.
           </p>
         </div>
       ),

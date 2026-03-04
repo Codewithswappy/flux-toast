@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flux 🌊
+
+**Beautiful, accessible, and performant toast notifications for React.**
+
+Flux is a notification system designed for modern web applications. It provides a premium experience with advanced animations, zero-knowledge setup, and a developer-friendly API.
+
+[View Documentation](https://flux-toast.vercel.app/docs) · [View Demo](https://flux-toast.vercel.app/#demo)
+
+## Core Features
+
+- **✨ Pure Performance:** Engineered for zero unnecessary re-renders using Zustand.
+- **🛡️ Accessible:** ARIA-compliant, keyboard navigable, and respects reduced motion.
+- **🚀 SSR-Safe:** Works flawlessly with Next.js (App & Client boundaries).
+- **🎨 Glassmorphism:** Sleek, modern design with advanced blur and backdrops.
+- **⚡ Interactive:** Swipe to dismiss, pause on hover, and lifecycle callbacks.
+
+## Project Structure
+
+This repository contains:
+
+- `app/`: The official documentation and landing page.
+- `src/flux-toast/`: The core library source code.
+- `src/flux-cli/`: The `flux-init` CLI tool for rapid setup.
 
 ## Getting Started
 
-First, run the development server:
+The easiest way to integrate Flux into your project is using our CLI:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx flux-init init
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For manual installation:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install flux-toast motion zustand
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Basic Usage
 
-## Learn More
+```tsx
+"use client";
+import { toast } from "flux-toast";
 
-To learn more about Next.js, take a look at the following resources:
+function App() {
+  return (
+    <button onClick={() => toast.success("It just works!")}>
+      Show Success
+    </button>
+  );
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+We welcome contributions! Please see our [GitHub Repo](https://github.com/Codewithswappy/flux-toast) for issue tracking.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT © [Codewithswappy](https://github.com/Codewithswappy)

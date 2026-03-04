@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "@flux-ui/toast/styles";
-import "@flux-ui/toast/themes";
+import "flux-toast/styles";
+import "flux-toast/themes";
 
 export const metadata: Metadata = {
   title: "Flux Toast — Premium Toast Notifications for React",

@@ -6,9 +6,9 @@
 
 :root,
 [data-theme="light"] {
-  --flux-toast-bg: #ffffff;
-  --flux-toast-bg-hover: #ffffff;
-  --flux-toast-bg-footer: #f9fafb;
+  --flux-toast-bg: rgba(255, 255, 255, 0.85);
+  --flux-toast-bg-hover: rgba(255, 255, 255, 0.95);
+  --flux-toast-bg-footer: rgba(249, 250, 251, 0.5);
   --flux-toast-fg: #0f172a;
   --flux-toast-fg-secondary: #64748b;
   --flux-toast-fg-muted: #94a3b8;
@@ -38,9 +38,9 @@
 
 [data-theme="dark"],
 .dark {
-  --flux-toast-bg: #18181b;
-  --flux-toast-bg-hover: #1f1f22;
-  --flux-toast-bg-footer: #09090b;
+  --flux-toast-bg: rgba(24, 24, 27, 0.85);
+  --flux-toast-bg-hover: rgba(31, 31, 34, 0.95);
+  --flux-toast-bg-footer: rgba(9, 9, 11, 0.5);
   --flux-toast-fg: #fafafa;
   --flux-toast-fg-secondary: #a1a1aa;
   --flux-toast-fg-muted: #71717a;
@@ -58,9 +58,9 @@
 /* Auto dark mode via system preference */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not(.light):not(:has(.dark)) {
-    --flux-toast-bg: #18181b;
-    --flux-toast-bg-hover: #1f1f22;
-    --flux-toast-bg-footer: #09090b;
+    --flux-toast-bg: rgba(24, 24, 27, 0.85);
+    --flux-toast-bg-hover: rgba(31, 31, 34, 0.95);
+    --flux-toast-bg-footer: rgba(9, 9, 11, 0.5);
     --flux-toast-fg: #fafafa;
     --flux-toast-fg-secondary: #a1a1aa;
     --flux-toast-fg-muted: #71717a;
@@ -112,6 +112,17 @@
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
   will-change: transform, opacity;
   overflow: hidden; /* clip footer and progress bar */
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  color: var(--flux-toast-fg);
+}
+
+.flux-text-primary {
+  color: var(--flux-toast-fg);
+}
+
+.flux-text-secondary {
+  color: var(--flux-toast-fg-secondary);
 }
 
 .flux-toast:hover {

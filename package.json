@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@flux-ui/toast": "file:src/flux-toast",
+    "flux-toast": "file:src/flux-toast",
     "@tabler/icons-react": "^3.37.1",
     "motion": "^12.34.3",
     "next": "16.1.6",

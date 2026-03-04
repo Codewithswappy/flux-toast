@@ -174,7 +174,7 @@ function Introduction() {
         and auto-dismiss timers automatically.
       </p>
 
-      <Code lang="tsx">{`import { toast } from "@flux-ui/toast";
+      <Code lang="tsx">{`import { toast } from "flux-toast";
 
 // That's it. One line.
 toast("Changes saved successfully");
@@ -260,13 +260,27 @@ function Installation() {
         styles.
       </p>
 
+      <h2 id="quick-init" className="docs-sh">
+        Quick setup (Recommended)
+      </h2>
+      <p className="docs-pd" style={{ marginBottom: 16 }}>
+        The fastest way to get started is to use the CLI tool. It handles
+        dependencies and basic setup automatically.
+      </p>
+      <Code file="Terminal" lang="bash">{`npx flux-init init`}</Code>
+
       <h2 id="package-managers" className="docs-sh">
-        Package managers
+        Manual installation
       </h2>
 
-      <Code file="Terminal" lang="npm">{`npm install @flux-ui/toast`}</Code>
-      <Code file="Terminal" lang="yarn">{`yarn add @flux-ui/toast`}</Code>
-      <Code file="Terminal" lang="pnpm">{`pnpm add @flux-ui/toast`}</Code>
+      <p className="docs-pd" style={{ marginBottom: 16 }}>
+        Install the core package along with its tiny peer dependencies.
+      </p>
+
+      <Code
+        file="Terminal"
+        lang="npm"
+      >{`npm install flux-toast motion zustand`}</Code>
 
       <h2 id="peer-dependencies" className="docs-sh">
         Peer dependencies
@@ -300,10 +314,10 @@ function Installation() {
         Add the CSS import to your root layout or global styles entrypoint.
       </p>
 
-      <Code file="app/layout.tsx" lang="tsx">{`import "@flux-ui/toast/styles";
+      <Code file="app/layout.tsx" lang="tsx">{`import "flux-toast/styles";
 
 // Optional: includes default light + dark theme variables
-import "@flux-ui/toast/themes";`}</Code>
+import "flux-toast/themes";`}</Code>
 
       <Tip>
         <p>
@@ -328,25 +342,42 @@ function QuickStart() {
         className="docs-sh"
         style={{ border: "none", margin: 0, padding: 0 }}
       ></h2>
-      <Step n={1} title="Wrap your app with ToastProvider">
+      <Step n={1} title="Create a Providers wrapper">
         <p>
-          Add <code>ToastProvider</code> and <code>ToastViewport</code> to your
-          root layout. The provider configures behavior, the viewport renders
-          the toast stack.
+          Since <code>flux-toast</code> is an interactive client-side library,
+          we recommend creating a separate <code>providers.tsx</code> file with
+          the <code>&quot;use client&quot;</code> directive.
+        </p>
+        <Code file="app/providers.tsx" lang="tsx">{`"use client";
+import { ToastProvider, ToastViewport } from "flux-toast";
+import "flux-toast/styles";
+
+export function Providers({ children }) {
+  return (
+    <ToastProvider>
+      {children}
+      <ToastViewport position="bottom-right" />
+    </ToastProvider>
+  );
+}`}</Code>
+      </Step>
+
+      <Step n={2} title="Wrap your Layout">
+        <p>
+          Import your new <code>Providers</code> component into your root
+          layout. This allows the rest of your layout to remain as a fast Server
+          Component.
         </p>
         <Code
           file="app/layout.tsx"
           lang="tsx"
-        >{`import { ToastProvider, ToastViewport } from "@flux-ui/toast";
+        >{`import { Providers } from "./providers";
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <ToastProvider defaultDuration={15000} maxVisible={5}>
-          {children}
-          <ToastViewport position="bottom-right" />
-        </ToastProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
@@ -358,22 +389,18 @@ export default function RootLayout({ children }) {
         className="docs-sh"
         style={{ border: "none", margin: 0, padding: 0 }}
       ></h2>
-      <Step n={2} title="Dispatch toasts from anywhere">
+      <Step n={3} title="Dispatch toasts from anywhere">
         <p>
-          Import <code>toast</code> and call it. No hooks required — it works
-          inside and outside React components.
+          Make sure the file you use <code>toast</code> in is a Client Component
+          by adding the <code>&quot;use client&quot;</code> directive at the
+          top.
         </p>
         <Code file="components/SaveButton.tsx" lang="tsx">{`"use client";
-import { toast } from "@flux-ui/toast";
+import { toast } from "flux-toast";
 
 export function SaveButton() {
   const handleSave = async () => {
-    try {
-      await saveData();
-      toast.success("Changes saved!");
-    } catch (err) {
-      toast.error("Failed to save changes");
-    }
+    toast.success("Changes saved!");
   };
 
   return <button onClick={handleSave}>Save</button>;
@@ -884,8 +911,8 @@ function CustomJSX() {
         style={{ borderRadius: 8 }}
       />
       <div>
-        <strong>New message from Sarah</strong>
-        <p style={{ margin: 0, fontSize: 13, opacity: 0.7 }}>
+        <strong className="flux-text-primary">New message from Sarah</strong>
+        <p className="flux-text-secondary" style={{ margin: 0, fontSize: 13 }}>
           Hey, can you review the PR?
         </p>
       </div>

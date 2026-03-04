@@ -1,3 +1,5 @@
+"use client";
+
 /* ─── Core Styles ─────────────────────────────────────────────────────────── */
 export { toast } from "./core/toast-controller";
 export { toastStore } from "./core/store";

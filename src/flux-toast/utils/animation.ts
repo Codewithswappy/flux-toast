@@ -24,13 +24,30 @@ export function getEnterAnimation(position: ToastPosition) {
   const { x, y } = getSlideDirection(position);
 
   return {
-    initial: { opacity: 0, x, y, scale: 0.85, filter: "blur(4px)" },
-    animate: { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" },
+    initial: { 
+      opacity: 0, 
+      x: x * 0.8, 
+      y: y * 0.8, 
+      rotateX: position.startsWith("top") ? -25 : 25, 
+      scale: 0.9, 
+      transformPerspective: 1000, 
+      filter: "blur(12px)" 
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0, 
+      y: 0, 
+      rotateX: 0, 
+      scale: 1, 
+      filter: "blur(0px)" 
+    },
     transition: {
       type: "spring" as const,
-      stiffness: 400,
-      damping: 30,
-      mass: 0.8,
+      stiffness: 350,
+      damping: 24,
+      mass: 0.6,
+      restDelta: 0.001,
+      restSpeed: 0.001,
     },
   };
 }
@@ -50,13 +67,14 @@ export function getExitAnimation(position: ToastPosition) {
   return {
     exit: {
       opacity: 0,
-      x: x * 0.6,
-      y: y * 0.6,
-      scale: 0.9,
-      filter: "blur(2px)",
+      x: x * 0.5,
+      y: y * 0.5,
+      scale: 0.95,
+      rotateX: position.startsWith("top") ? 15 : -15, 
+      filter: "blur(8px)",
       transition: {
-        duration: 0.25,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        duration: 0.35,
+        ease: [0.32, 0.72, 0, 1] as [number, number, number, number],
       },
     },
   };

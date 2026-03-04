@@ -10,10 +10,8 @@ export default defineConfig({
   minify: false,
   sourcemap: true,
   external: ["react", "react-dom", "motion", "zustand"],
-  esbuildOptions(options) {
-    options.banner = {
-      js: '"use client";',
-    };
+  banner: {
+    js: '"use client";',
   },
   onSuccess: async () => {
     // Copy CSS files

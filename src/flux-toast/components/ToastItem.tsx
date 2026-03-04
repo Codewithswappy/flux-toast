@@ -86,15 +86,15 @@ function SuccessIcon() {
         cx="12"
         cy="12"
         r="9"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        initial={{ pathLength: 0, opacity: 0, scale: 0.8 }}
+        animate={{ pathLength: 1, opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.175, 0.885, 0.32, 1.275] }}
       />
       <motion.path
         d="M9 12l2 2l4 -4"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
       />
     </motion.svg>
   );
@@ -115,15 +115,15 @@ function ErrorIcon() {
         cx="12"
         cy="12"
         r="9"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        initial={{ pathLength: 0, opacity: 0, scale: 0.8 }}
+        animate={{ pathLength: 1, opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.175, 0.885, 0.32, 1.275] }}
       />
       <motion.path
         d="M10 10l4 4m0 -4l-4 4"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
       />
     </motion.svg>
   );
@@ -141,16 +141,17 @@ function WarningIcon() {
       strokeLinejoin="round"
     >
       <motion.path
-        d="M12 9v2m0 4v.01"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.2, delay: 0.4 }}
+        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"
+        initial={{ pathLength: 0, opacity: 0, scale: 0.8 }}
+        animate={{ pathLength: 1, opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.175, 0.885, 0.32, 1.275] }}
+        style={{ originX: "50%", originY: "50%" }}
       />
       <motion.path
-        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"
+        d="M12 9v2m0 4v.01"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        transition={{ duration: 0.4, delay: 0.25, ease: "easeOut" }}
       />
     </motion.svg>
   );
@@ -171,15 +172,15 @@ function InfoIcon() {
         cx="12"
         cy="12"
         r="9"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        initial={{ pathLength: 0, opacity: 0, scale: 0.8 }}
+        animate={{ pathLength: 1, opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.175, 0.885, 0.32, 1.275] }}
       />
       <motion.path
         d="M12 8h.01M11 12h1v4h1"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
       />
     </motion.svg>
   );
