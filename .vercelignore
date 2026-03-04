@@ -1,8 +1,8 @@
 src/
-README.md
-docs/
 .agents/
 .agent/
 **/*.tgz
 **/node_modules/
 **/dist/
+node_modules/
+.next/
