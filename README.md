@@ -6,6 +6,8 @@ Flux is a notification system designed for modern web applications. It provides 
 
 [View Documentation](https://flux.heyyswap.in/docs) · [View Demo](https://flux.heyyswap.in/#demo)
 
+![Flux Toast Notifications Preview](public/og-image.png)
+
 ## Core Features
 
 - **✨ Pure Performance:** Engineered for zero unnecessary re-renders using Zustand.
