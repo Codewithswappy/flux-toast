@@ -2,15 +2,18 @@
   "name": "flux",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "src/*"
+  ],
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run build --workspaces --if-present && next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@tabler/icons-react": "^3.37.1",
-    "flux-toast": "file:src/flux-toast",
+    "flux-toast": "*",
     "motion": "^12.34.3",
     "next": "16.1.6",
     "react": "19.2.3",
