@@ -1,6 +1,4 @@
-src/
-.agents/
-.agent/
+
 **/*.tgz
 **/node_modules/
 **/dist/
