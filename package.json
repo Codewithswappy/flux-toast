@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "npm run build --workspaces --if-present && next build",
+    "build": "npm run build --prefix src/flux-toast && next build",
     "start": "next start",
     "lint": "eslint"
   },
