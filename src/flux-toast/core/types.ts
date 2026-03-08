@@ -12,6 +12,8 @@ export type ToastPosition =
   | "top-center"
   | "bottom-center";
 
+export type ToastPattern = "dash-node" | "dots" | "macos" | "none";
+
 export interface ToastAction {
   label: string;
   onClick: () => void;
@@ -110,7 +112,8 @@ export interface ToastProviderProps {
   gap?: number;
   /** theme: "light" | "dark" | "system" */
   theme?: "light" | "dark" | "system";
-  /** group duplicate toasts */
+  /** pattern: "dash-node" | "dots" | "macos" | "none" */
+  pattern?: ToastPattern;
   groupDuplicates?: boolean;
 }
 
@@ -135,6 +138,7 @@ export interface ToastStoreState {
   position: ToastPosition;
   groupDuplicates: boolean;
   theme: "light" | "dark" | "system";
+  pattern: ToastPattern;
 
   // Actions
   addToast: (toast: Toast) => void;
@@ -145,5 +149,5 @@ export interface ToastStoreState {
   pauseToast: (id: string) => void;
   resumeToast: (id: string) => void;
   promoteFromQueue: () => void;
-  configure: (config: Partial<Pick<ToastStoreState, "maxVisible" | "defaultDuration" | "position" | "groupDuplicates" | "theme">>) => void;
+  configure: (config: Partial<Pick<ToastStoreState, "maxVisible" | "defaultDuration" | "position" | "groupDuplicates" | "theme" | "pattern">>) => void;
 }

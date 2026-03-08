@@ -22,7 +22,7 @@ function highlight(code: string) {
       "§§ck§§$1§§/span§§",
     )
     .replace(
-      /\b(toast|success|error|warning|info|loading|promise|update|dismiss|clear|fetch|console|log|saveData|deleteUser|ToastProvider|ToastViewport|SaveButton|RootLayout)\b/g,
+      /\b(toast|success|error|warning|info|loading|promise|update|dismiss|clear|configure|fetch|console|log|saveData|deleteUser|ToastProvider|ToastViewport|SaveButton|RootLayout)\b/g,
       "§§cf§§$1§§/span§§",
     )
     .replace(/§§(.*?)§§/g, (m, p1) =>
@@ -203,7 +203,7 @@ toast.error("Something went wrong");`}</Code>
         }}
       >
         {[
-          ["Expandable body", "Collapsed by default, expand for details"],
+          ["Visual patterns", "Technical, dotted, or native macOS aesthetics"],
           ["Progress timers", "Animated bar + countdown on hover"],
           ["Queue system", "maxVisible limit, FIFO promotion"],
           ["Promise tracking", "Loading → success/error transitions"],
@@ -384,11 +384,6 @@ export default function RootLayout({ children }) {
 }`}</Code>
       </Step>
 
-      <h2
-        id="step-2---dispatch"
-        className="docs-sh"
-        style={{ border: "none", margin: 0, padding: 0 }}
-      ></h2>
       <Step n={3} title="Dispatch toasts from anywhere">
         <p>
           Make sure the file you use <code>toast</code> in is a Client Component
@@ -407,12 +402,7 @@ export function SaveButton() {
 }`}</Code>
       </Step>
 
-      <h2
-        id="step-3---customize"
-        className="docs-sh"
-        style={{ border: "none", margin: 0, padding: 0 }}
-      ></h2>
-      <Step n={3} title="Customize to your needs">
+      <Step n={4} title="Advanced customization">
         <p>
           Use the options object to add descriptions, interactive actions,
           custom durations, and callbacks.
@@ -602,12 +592,33 @@ function PromiseAPI() {
       <Param name="messages.success" type="string | (data: T) => string" req>
         Displayed or called on fulfillment.
       </Param>
-      <Param name="messages.error" type="string | (err) => string" req>
+      <Param name="messages.error" type="string | (err: any) => string" req>
         Displayed or called on rejection.
       </Param>
       <Param name="input" type="ToastInput" req={false}>
-        Additional base properties (duration, action, etc).
+        Additional base properties (duration, action, etc) applied to all
+        states.
       </Param>
+
+      <h2 id="promise-real-world" className="docs-sh">
+        Real-world example
+      </h2>
+      <Code lang="tsx">{`// A complex async workflow mapped to a single toast
+toast.promise(
+  database.saveUser(userData), 
+  {
+    loading: "Synchronizing with database...",
+    success: (user) => \`User \${user.name} synchronized successfully.\`,
+    error: (err) => \`Sync failed: \${err.message}\`,
+  },
+  {
+    duration: 6000,
+    action: {
+      label: "Open Dashboard",
+      onClick: () => goToDashboard(),
+    }
+  }
+);`}</Code>
 
       <Tip>
         <p>
@@ -682,6 +693,20 @@ toast.clear();
 
 // Equivalent shorthand
 toast.dismiss();`}</Code>
+
+      <h2 id="configure" className="docs-sh">
+        toast.configure()
+      </h2>
+      <p className="docs-pd" style={{ marginBottom: 12 }}>
+        Update global settings imperatively. This is useful for changing things
+        like <code>pattern</code> or <code>theme</code> on the fly without
+        re-rendering your entire app provider.
+      </p>
+      <Code lang="tsx">{`// Switch to macOS style globally
+toast.configure({ pattern: "macos" });
+
+// Update max visible count
+toast.configure({ maxVisible: 10 });`}</Code>
     </div>
   );
 }
@@ -748,6 +773,14 @@ function Provider() {
       </Param>
       <Param name="headless" type="boolean" def="false">
         Disables built-in CSS. Use for fully custom styling.
+      </Param>
+      <Param
+        name="pattern"
+        type="ToastPattern"
+        def="dash-node"
+        enums={["dash-node", "dots", "macos", "none"]}
+      >
+        Visual background aesthetic and border style.
       </Param>
       <Param name="gap" type="number" def="12">
         Spacing between stacked toasts in pixels.
@@ -931,6 +964,204 @@ function CustomJSX() {
   );
 }
 
+function Aesthetics() {
+  return (
+    <div className="docs-content">
+      <h1>Aesthetics & Patterns</h1>
+      <p className="docs-lead">
+        Customize the visual background and structural feel of your toasts with
+        built-in design patterns.
+      </p>
+
+      <h2 id="using-patterns" className="docs-sh">
+        Using patterns
+      </h2>
+      <p className="docs-pd" style={{ marginBottom: 12 }}>
+        Patterns can be set globally via <code>ToastProvider</code> or updated
+        dynamically using <code>toast.configure()</code>.
+      </p>
+      <Code lang="tsx">{`<ToastProvider pattern="dots">
+  <App />
+</ToastProvider>`}</Code>
+
+      <h2 id="available-options" className="docs-sh">
+        Available options
+      </h2>
+      <div style={{ marginTop: 16 }}>
+        <Param
+          name="dash-node"
+          type="Default"
+          enums={["Dashed border", "Angled technical grid"]}
+        >
+          A high-tech, precise engineering aesthetic with 45-degree dashed
+          lines.
+        </Param>
+        <Param
+          name="dots"
+          type="Elegant"
+          enums={["Solid border", "Variable dot matrix"]}
+        >
+          A premium staggered dot pattern with varying opacities for a deep,
+          textured feel.
+        </Param>
+        <Param
+          name="macos"
+          type="Native"
+          enums={["0.5px border", "10px radius", "Deep elevation"]}
+        >
+          A highly polished, rounded UI that mimics the authentic feel of a
+          macOS system notification.
+        </Param>
+        <Param
+          name="none"
+          type="Minimal"
+          enums={["Solid border", "No pattern"]}
+        >
+          Pure minimalism. Clean background with standard borders.
+        </Param>
+      </div>
+
+      <h2 id="custom-styling" className="docs-sh">
+        Pattern Styling
+      </h2>
+      <p className="docs-pd">
+        Each pattern applies a specific CSS class to the toast element:
+        <code>.flux-toast--pattern-[name]</code>. You can use these to target
+        specific aesthetics in your CSS.
+      </p>
+      <Code lang="css">{`.flux-toast--pattern-macos {
+  /* Add your custom macOS-only styles here */
+  backdrop-filter: blur(10px);
+}
+
+.flux-toast--pattern-dots .flux-toast-pattern-rect {
+  /* Customize the color of the pattern independently */
+  color: var(--flux-toast-info);
+  opacity: 0.1;
+}`}</Code>
+
+      <Tip>
+        <p>
+          Use <code>toast.configure({`{ pattern: 'macos' }`})</code> to quickly
+          demo different aesthetics to your users or Stakeholders!
+        </p>
+      </Tip>
+    </div>
+  );
+}
+
+function BestPractices() {
+  return (
+    <div className="docs-content">
+      <h1>Best Practices</h1>
+      <p className="docs-lead">
+        Guidelines on how to use notifications effectively without overwhelming
+        your users.
+      </p>
+
+      <h2 id="meaningful-titles" className="docs-sh">
+        Meaningful Titles
+      </h2>
+      <p className="docs-pd">
+        Keep titles concise and action-oriented. Avoid generic terms like
+        &quot;Success&quot; or &quot;Notification&quot;.
+      </p>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 12,
+          marginTop: 12,
+        }}
+      >
+        <div
+          style={{
+            padding: 12,
+            borderRadius: 8,
+            background: "rgba(239, 68, 68, 0.05)",
+            border: "1px solid rgba(239, 68, 68, 0.1)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#ef4444",
+              marginBottom: 4,
+              textTransform: "uppercase",
+            }}
+          >
+            Bad
+          </div>
+          <p style={{ fontSize: 13, margin: 0, color: "var(--fg-secondary)" }}>
+            &quot;Success&quot;
+          </p>
+        </div>
+        <div
+          style={{
+            padding: 12,
+            borderRadius: 8,
+            background: "rgba(16, 185, 129, 0.05)",
+            border: "1px solid rgba(16, 185, 129, 0.1)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#10b981",
+              marginBottom: 4,
+              textTransform: "uppercase",
+            }}
+          >
+            Good
+          </div>
+          <p style={{ fontSize: 13, margin: 0, color: "var(--fg-secondary)" }}>
+            &quot;Changes saved&quot;
+          </p>
+        </div>
+      </div>
+
+      <h2 id="use-descriptions" className="docs-sh">
+        Use Descriptions for Context
+      </h2>
+      <p className="docs-pd">
+        If an action has consequences or needs more detail, use the{" "}
+        <code>description</code> field. It stays hidden until the user focuses
+        the toast, keeping the UI clean.
+      </p>
+      <Code lang="tsx">{`toast({
+  title: "User deleted",
+  description: "All associated data has been archived and will be removed in 30 days.",
+  type: "warning"
+});`}</Code>
+
+      <h2 id="interactive-actions" className="docs-sh">
+        Interactive Actions
+      </h2>
+      <p className="docs-pd">
+        For success notifications, consider adding an &quot;Undo&quot; or
+        &quot;View&quot; action to help the user continue their workflow.
+      </p>
+      <Code lang="tsx">{`toast.success("Profile updated", {
+  action: {
+    label: "View Profile",
+    onClick: () => router.push("/profile")
+  }
+});`}</Code>
+
+      <h2 id="grouping" className="docs-sh">
+        Grouping Duplicates
+      </h2>
+      <p className="docs-pd">
+        Enable <code>groupDuplicates</code> in your provider to avoid
+        &quot;toast spam&quot; when the same event fires multiple times rapidly.
+      </p>
+      <Code lang="tsx">{`<ToastProvider groupDuplicates={true}>`}</Code>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /*  SECTION MAP + PAGE                                                         */
 /* ═══════════════════════════════════════════════════════════════════════════ */
@@ -947,6 +1178,8 @@ const SECTIONS: Record<string, React.FC> = {
   viewport: () => <Viewport />,
   positioning: () => <Positioning />,
   theming: () => <Theming />,
+  aesthetics: () => <Aesthetics />,
+  "best-practices": () => <BestPractices />,
   "custom-jsx": () => <CustomJSX />,
 };
 

@@ -231,4 +231,11 @@ toast.clear = (): void => {
   toastStore.getState().clearAll();
 };
 
+/**
+ * Configure global toast settings.
+ */
+toast.configure = (config: Parameters<ReturnType<typeof toastStore.getState>["configure"]>[0]): void => {
+  toastStore.getState().configure(config);
+};
+
 export { toast };

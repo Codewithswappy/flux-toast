@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   IconCheck,
   IconX,
@@ -15,6 +15,9 @@ import {
   IconArrowRight,
   IconBook,
   IconMaximize,
+  IconBook2,
+  IconBookFilled,
+  IconBookmark,
 } from "@tabler/icons-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { FluxLogo } from "@/components/FluxLogo";
@@ -54,108 +57,315 @@ function BackgroundPattern() {
 
 // ─── Hero Code Preview ──────────────────────────────────────────────────────
 
-function HeroCodeBlock() {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.7,
+const SNIPPETS = [
+  {
+    comment: "// One line — instant feedback",
+    lines: [
+      {
+        tokens: [
+          { type: "function", text: "toast" },
+          { type: "punctuation", text: "." },
+          { type: "function", text: "success" },
+          { type: "punctuation", text: "(" },
+          { type: "string", text: '"Deployed to prod"' },
+          { type: "punctuation", text: ")" },
+        ],
       },
-    },
-  };
+    ],
+  },
+  {
+    comment: "// Promise lifecycle tracking",
+    lines: [
+      {
+        tokens: [
+          { type: "function", text: "toast" },
+          { type: "punctuation", text: "." },
+          { type: "function", text: "promise" },
+          { type: "punctuation", text: "(" },
+          { type: "function", text: "deploy" },
+          { type: "punctuation", text: "()" },
+          { type: "punctuation", text: ", " },
+          { type: "punctuation", text: "{" },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  " },
+          { type: "property", text: "loading" },
+          { type: "punctuation", text: ": " },
+          { type: "string", text: '"Building…"' },
+          { type: "punctuation", text: "," },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  " },
+          { type: "property", text: "success" },
+          { type: "punctuation", text: ": " },
+          { type: "string", text: '"Live on edge"' },
+          { type: "punctuation", text: "," },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  " },
+          { type: "punctuation", text: "}" },
+          { type: "punctuation", text: ")" },
+        ],
+      },
+    ],
+  },
+  {
+    comment: "// Powerful interactive actions",
+    lines: [
+      {
+        tokens: [
+          { type: "function", text: "toast" },
+          { type: "punctuation", text: "." },
+          { type: "function", text: "info" },
+          { type: "punctuation", text: "(" },
+          { type: "string", text: '"Update Available"' },
+          { type: "punctuation", text: ", " },
+          { type: "punctuation", text: "{" },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  " },
+          { type: "property", text: "action" },
+          { type: "punctuation", text: ": " },
+          { type: "punctuation", text: "{" },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "    " },
+          { type: "property", text: "label" },
+          { type: "punctuation", text: ": " },
+          { type: "string", text: '"Install Now"' },
+          { type: "punctuation", text: "," },
+        ],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  " },
+          { type: "punctuation", text: "}" },
+          { type: "punctuation", text: "}" },
+          { type: "punctuation", text: ")" },
+        ],
+      },
+    ],
+  },
+  {
+    comment: "// Fully custom JSX content",
+    lines: [
+      {
+        tokens: [
+          { type: "function", text: "toast" },
+          { type: "punctuation", text: "(" },
+          { type: "punctuation", text: "{" },
+          { type: "property", text: " content" },
+          { type: "punctuation", text: ": " },
+          { type: "punctuation", text: "(" },
+        ],
+      },
+      {
+        tokens: [{ type: "text", text: '  <div className="flex gap-2">' }],
+      },
+      {
+        tokens: [{ type: "text", text: "    <FluxLogo />" }],
+      },
+      {
+        tokens: [{ type: "text", text: "    <span>Welcome back!</span>" }],
+      },
+      {
+        tokens: [{ type: "text", text: "  </div>" }],
+      },
+      {
+        tokens: [
+          { type: "text", text: "  )" },
+          { type: "punctuation", text: "}" },
+          { type: "punctuation", text: ")" },
+        ],
+      },
+    ],
+  },
+];
 
-  const item = {
-    hidden: { opacity: 0, x: -8, filter: "blur(2px)" },
-    show: {
-      opacity: 1,
-      x: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.6, ease },
-    },
-  };
+function HeroCodeBlock() {
+  const [index, setIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [lineIndex, setLineIndex] = useState(0);
+  const [tokenIndex, setTokenIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+
+  const snippet = SNIPPETS[index];
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    const tick = () => {
+      const currentLines = snippet.lines;
+      const currentLine = currentLines[lineIndex];
+      const currentToken = currentLine.tokens[tokenIndex];
+
+      if (!isDeleting) {
+        // Typing (Faster & Dynamic)
+        if (charIndex < currentToken.text.length) {
+          setCharIndex((prev) => prev + 1);
+          timeout = setTimeout(tick, 20 + Math.random() * 25);
+        } else if (tokenIndex < currentLine.tokens.length - 1) {
+          setTokenIndex((prev) => prev + 1);
+          setCharIndex(0);
+          timeout = setTimeout(tick, 10);
+        } else if (lineIndex < currentLines.length - 1) {
+          setLineIndex((prev) => prev + 1);
+          setTokenIndex(0);
+          setCharIndex(0);
+          timeout = setTimeout(tick, 60);
+        } else {
+          // Finished typing snippet
+          timeout = setTimeout(() => setIsDeleting(true), 2400);
+        }
+      } else {
+        // Deleting (Super Fast)
+        if (charIndex > 0) {
+          setCharIndex((prev) => prev - 1);
+          timeout = setTimeout(tick, 8);
+        } else if (tokenIndex > 0) {
+          setTokenIndex((prev) => prev - 1);
+          setCharIndex(currentLine.tokens[tokenIndex - 1].text.length);
+          timeout = setTimeout(tick, 5);
+        } else if (lineIndex > 0) {
+          setLineIndex((prev) => prev - 1);
+          const prevLine = currentLines[lineIndex - 1];
+          setTokenIndex(prevLine.tokens.length - 1);
+          setCharIndex(prevLine.tokens[prevLine.tokens.length - 1].text.length);
+          timeout = setTimeout(tick, 30);
+        } else {
+          setIsDeleting(false);
+          setIndex((prev) => (prev + 1) % SNIPPETS.length);
+          setLineIndex(0);
+          setTokenIndex(0);
+          setCharIndex(0);
+          timeout = setTimeout(tick, 400);
+        }
+      }
+    };
+
+    timeout = setTimeout(tick, 100);
+    return () => clearTimeout(timeout);
+  }, [index, isDeleting, lineIndex, tokenIndex, charIndex, snippet]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.45, ease }}
-      className="relative w-full max-w-md"
+      className="relative w-full max-w-lg"
     >
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80">
-          <div className="flex gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-            <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-            <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+      <div className="hero-code-container min-h-[300px] flex flex-col relative">
+        <div className="hero-code-bg" />
+        <div className="hero-code-header flex items-center justify-between px-4 py-3 shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-400/80 shadow-[0_0_8px_rgba(248,113,113,0.4)]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80 shadow-[0_0_8px_rgba(251,191,36,0.4)]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 shadow-[0_0_8px_rgba(52,211,153,0.4)]" />
+            </div>
+            <div className="flex items-center gap-2 ml-4">
+              <IconBook2 size={12} className="text-zinc-400" />
+              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 tracking-widest">
+                fluxDemo.tsx
+              </span>
+            </div>
           </div>
-          <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-600 ml-2 tracking-wide uppercase">
-            App.tsx
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <span className="text-[9px] font-mono text-zinc-400 dark:text-zinc-500">
+              UTF-8
+            </span>
+          </div>
         </div>
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="p-5 hero-code overflow-x-auto"
-        >
-          <motion.div variants={item}>
+        <div className="p-5 hero-code overflow-x-auto font-mono text-[13px] leading-6 flex-1">
+          <div className="mb-4">
             <span className="token-keyword">import</span>{" "}
             <span className="token-punctuation">{"{"}</span>{" "}
             <span className="token-property">toast</span>{" "}
             <span className="token-punctuation">{"}"}</span>{" "}
             <span className="token-keyword">from</span>{" "}
             <span className="token-string">&quot;flux-toast&quot;</span>
-          </motion.div>
-          <motion.div variants={item} className="mt-3">
-            <span className="token-comment">
-              {"// One line — instant feedback"}
-            </span>
-          </motion.div>
-          <motion.div variants={item}>
-            <span className="token-function">toast</span>
-            <span className="token-punctuation">.</span>
-            <span className="token-function">success</span>
-            <span className="token-punctuation">(</span>
-            <span className="token-string">&quot;Deployed to prod&quot;</span>
-            <span className="token-punctuation">)</span>
-          </motion.div>
-          <motion.div variants={item} className="mt-3">
-            <span className="token-comment">{"// Promise lifecycle"}</span>
-          </motion.div>
-          <motion.div variants={item}>
-            <span className="token-function">toast</span>
-            <span className="token-punctuation">.</span>
-            <span className="token-function">promise</span>
-            <span className="token-punctuation">(</span>
-            <span className="token-function">deploy</span>
-            <span className="token-punctuation">()</span>
-            <span className="token-punctuation">,</span>{" "}
-            <span className="token-punctuation">{"{"}</span>
-          </motion.div>
-          <motion.div variants={item}>
-            &nbsp;&nbsp;<span className="token-property">loading</span>
-            <span className="token-punctuation">:</span>{" "}
-            <span className="token-string">&quot;Building…&quot;</span>
-            <span className="token-punctuation">,</span>
-          </motion.div>
-          <motion.div variants={item}>
-            &nbsp;&nbsp;<span className="token-property">success</span>
-            <span className="token-punctuation">:</span>{" "}
-            <span className="token-string">&quot;Live on edge&quot;</span>
-            <span className="token-punctuation">,</span>
-          </motion.div>
-          <motion.div variants={item}>
-            &nbsp;&nbsp;<span className="token-property">error</span>
-            <span className="token-punctuation">:</span>&nbsp;&nbsp;
-            <span className="token-string">&quot;Build failed&quot;</span>
-          </motion.div>
-          <motion.div variants={item}>
-            <span className="token-punctuation">{"}"}</span>
-            <span className="token-punctuation">)</span>
-          </motion.div>
-        </motion.div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="text-zinc-400 dark:text-zinc-600 italic mb-1">
+                {snippet.comment}
+              </div>
+              {snippet.lines.map((line, lIdx) => {
+                if (lIdx > lineIndex) return null;
+
+                return (
+                  <div key={lIdx} className="whitespace-pre">
+                    {line.tokens.map((token, tIdx) => {
+                      if (lIdx === lineIndex && tIdx > tokenIndex) return null;
+                      const text =
+                        lIdx === lineIndex && tIdx === tokenIndex
+                          ? token.text.slice(0, charIndex)
+                          : token.text;
+
+                      return (
+                        <span key={tIdx} className={`token-${token.type}`}>
+                          {text.split("").map((char, cIdx) => (
+                            <motion.span
+                              key={cIdx}
+                              initial={{
+                                opacity: 0,
+                                scale: 0.8,
+                                filter: "blur(2px)",
+                              }}
+                              animate={{
+                                opacity: 1,
+                                scale: 1,
+                                filter: "blur(0px)",
+                              }}
+                              transition={{ duration: 0.1 }}
+                              className="inline-block"
+                            >
+                              {char}
+                            </motion.span>
+                          ))}
+                        </span>
+                      );
+                    })}
+                    {lIdx === lineIndex && (
+                      <motion.span
+                        animate={{
+                          opacity: [1, 0, 1],
+                          scale: [1, 1.1, 1],
+                          boxShadow: [
+                            "0 0 0px var(--emerald-500)",
+                            "0 0 12px var(--emerald-500)",
+                            "0 0 0px var(--emerald-500)",
+                          ],
+                        }}
+                        transition={{ repeat: Infinity, duration: 0.8 }}
+                        className="inline-block w-[2px] h-4 bg-emerald-500 ml-0.5 align-middle shadow-[0_0_10px_#10b981]"
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </motion.div>
   );
@@ -185,7 +395,7 @@ function InstallCommand() {
       <span className="text-zinc-200 dark:text-zinc-300 font-mono">
         npx <span className="text-zinc-400">flux-init init</span>
       </span>
-      <span className="ml-1 text-[11px] text-zinc-600 group-hover:text-zinc-400 transition-colors">
+      <span className="ml-1 text-[11px] text-zinc-400 group-hover:text-zinc-100 transition-colors">
         {copied ? "✓" : "Copy"}
       </span>
     </motion.button>
@@ -321,7 +531,13 @@ function Navbar({
 
 // ─── Demo Content ───────────────────────────────────────────────────────────
 
-function DemoContent() {
+function DemoContent({
+  pattern,
+  setPattern,
+}: {
+  pattern: string;
+  setPattern: (p: string) => void;
+}) {
   const [position, setPosition] = useState<ToastPosition>("bottom-right");
   const { toasts, queueCount } = useToast();
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -670,6 +886,60 @@ function DemoContent() {
             </motion.div>
           </section>
 
+          {/* ── Pattern ──────────────────────────────────────────── */}
+          <section className="scroll-mt-28">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-lg font-semibold font-display tracking-tight text-zinc-900 dark:text-white mb-1">
+                Aesthetics & Pattern
+              </h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-8">
+                Customize the UI pattern to match your brand. Choose a minimal
+                macOS feel or a technical dash-node grid.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, ease }}
+              className="max-w-md mx-auto"
+            >
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { label: "Ref Node", value: "dash-node" },
+                  { label: "Dots", value: "dots" },
+                  { label: "macOS UI", value: "macos" },
+                  { label: "None", value: "none" },
+                ].map(({ label, value }) => (
+                  <button
+                    key={value}
+                    className={`px-3 py-3 rounded-lg text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 ${
+                      pattern === value
+                        ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
+                        : "border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-700"
+                    }`}
+                    onClick={() => {
+                      setPattern(value);
+                      toast.success({
+                        title: `Pattern updated`,
+                        description: `Now using ${label}-style UI.`,
+                        duration: 3000,
+                      });
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+
           {/* ── Footer ────────────────────────────────────────────── */}
           <footer className="pt-16 border-t border-zinc-100 dark:border-zinc-900">
             <div className="flex flex-col items-center gap-5">
@@ -734,14 +1004,17 @@ function DemoContent() {
 // ─── Entry ──────────────────────────────────────────────────────────────────
 
 export default function Page() {
+  const [pattern, setPattern] = useState<any>("dash-node");
+
   return (
     <ToastProvider
       maxVisible={5}
       defaultDuration={15000}
       groupDuplicates={true}
       theme="system"
+      pattern={pattern}
     >
-      <DemoContent />
+      <DemoContent pattern={pattern} setPattern={setPattern} />
     </ToastProvider>
   );
 }

@@ -95,7 +95,7 @@ export function ToastViewport({
         gap: `${gap}px`,
       }}
     >
-      <AnimatePresence mode="popLayout" initial={false}>
+      <AnimatePresence initial={false}>
         {orderedToasts.map((toast) => (
           <ToastItem
             key={toast.id}

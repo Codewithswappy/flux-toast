@@ -4,8 +4,8 @@ import { prefersReducedMotion } from "./accessibility";
 // ─── Slide directions based on position ──────────────────────────────────────
 
 function getSlideDirection(position: ToastPosition): { x: number; y: number } {
-  if (position.includes("right")) return { x: 120, y: 0 };
-  if (position.includes("left")) return { x: -120, y: 0 };
+  if (position.includes("right")) return { x: 100, y: 0 };
+  if (position.includes("left")) return { x: -100, y: 0 };
   if (position.startsWith("top")) return { x: 0, y: -80 };
   return { x: 0, y: 80 };
 }
@@ -26,28 +26,19 @@ export function getEnterAnimation(position: ToastPosition) {
   return {
     initial: { 
       opacity: 0, 
-      x: x * 0.8, 
-      y: y * 0.8, 
-      rotateX: position.startsWith("top") ? -25 : 25, 
       scale: 0.9, 
-      transformPerspective: 1000, 
-      filter: "blur(12px)" 
+      y: position.startsWith("top") ? -10 : 10,
     },
     animate: { 
       opacity: 1, 
-      x: 0, 
-      y: 0, 
-      rotateX: 0, 
       scale: 1, 
-      filter: "blur(0px)" 
+      y: 0,
     },
     transition: {
       type: "spring" as const,
-      stiffness: 350,
+      stiffness: 300,
       damping: 24,
-      mass: 0.6,
-      restDelta: 0.001,
-      restSpeed: 0.001,
+      mass: 0.7,
     },
   };
 }
@@ -67,13 +58,9 @@ export function getExitAnimation(position: ToastPosition) {
   return {
     exit: {
       opacity: 0,
-      x: x * 0.5,
-      y: y * 0.5,
-      scale: 0.95,
-      rotateX: position.startsWith("top") ? 15 : -15, 
-      filter: "blur(8px)",
+      scale: 0.85,
       transition: {
-        duration: 0.35,
+        duration: 0.2,
         ease: [0.32, 0.72, 0, 1] as [number, number, number, number],
       },
     },
@@ -106,7 +93,7 @@ export function getSwipeDismissConfig(position: ToastPosition) {
 
 export const layoutTransition = {
   type: "spring" as const,
-  stiffness: 500,
-  damping: 35,
-  mass: 0.6,
+  stiffness: 450,
+  damping: 40,
+  mass: 1,
 };

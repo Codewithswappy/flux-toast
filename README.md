@@ -13,7 +13,7 @@ Flux is a notification system designed for modern web applications. It provides 
 - **✨ Pure Performance:** Engineered for zero unnecessary re-renders using Zustand.
 - **🛡️ Accessible:** ARIA-compliant, keyboard navigable, and respects reduced motion.
 - **🚀 SSR-Safe:** Works flawlessly with Next.js (App & Client boundaries).
-- **🎨 Glassmorphism:** Sleek, modern design with advanced blur and backdrops.
+- **🎨 Visual Patterns:** Multiple built-in aesthetics (Dashed, Dotted, macOS).
 - **⚡ Interactive:** Swipe to dismiss, pause on hover, and lifecycle callbacks.
 
 ## Project Structure

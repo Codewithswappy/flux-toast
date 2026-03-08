@@ -37,7 +37,9 @@ const SIDEBAR = [
     items: [
       { id: "positioning", label: "Positioning" },
       { id: "theming", label: "Theming" },
+      { id: "aesthetics", label: "Aesthetics & Patterns" },
       { id: "custom-jsx", label: "Custom Content" },
+      { id: "best-practices", label: "Best Practices" },
     ],
   },
 ];
@@ -59,7 +61,9 @@ const ITEM_DESCS: Record<string, string> = {
   viewport: "Render target for toast queue",
   positioning: "Screen coordinates and origins",
   theming: "Dark mode and color variables",
+  aesthetics: "Pattern configuration and visual presets",
   "custom-jsx": "Rendering pure React nodes",
+  "best-practices": "Dos and don'ts for great notifications",
 };
 
 export default function DocsLayout({

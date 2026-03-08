@@ -35,27 +35,67 @@ h1, h2, h3, h4, h5, h6, .font-display {
 .hero-orb-1 { animation: hero-orb-drift 20s ease-in-out infinite; }
 .hero-orb-2 { animation: hero-orb-drift-2 25s ease-in-out infinite; }
 
-/* ─── Code Block Tokens ───────────────────────────────────────────────────── */
+/* ─── Hero Code Sharp Container ─────────────────────────────────────────── */
+
+.hero-code-container {
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px; /* Precision sharp corners */
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+:is(.dark) .hero-code-container {
+  background: rgba(9, 9, 11, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+.hero-code-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: radial-gradient(circle at center, black, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at center, black, transparent 90%);
+}
+
+.hero-code-header {
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
+}
+
+/* ─── Neon Pro Palette ───────────────────────────────────────────────────── */
 
 .hero-code {
   font-family: 'JetBrains Mono', 'SF Mono', monospace;
-  font-size: 0.78rem;
-  line-height: 1.75;
+  position: relative;
+  z-index: 5;
 }
 
-.hero-code .token-keyword    { color: #71717a; }
-.hero-code .token-string     { color: #52525b; }
-.hero-code .token-function   { color: #3f3f46; }
-.hero-code .token-comment    { color: #a1a1aa; font-style: italic; }
-.hero-code .token-punctuation{ color: #d4d4d8; }
-.hero-code .token-property   { color: #52525b; }
+/* Light Theme */
+.hero-code .token-keyword    { color: #9333ea; font-weight: 600; }
+.hero-code .token-string     { color: #059669; }
+.hero-code .token-function   { color: #2563eb; }
+.hero-code .token-comment    { color: #94a3b8; font-style: italic; }
+.hero-code .token-punctuation{ color: #475569; }
+.hero-code .token-property   { color: #ea580c; }
+.hero-code .token-text       { color: #1e293b; }
 
-:is(.dark) .hero-code .token-keyword    { color: #a1a1aa; }
-:is(.dark) .hero-code .token-string     { color: #71717a; }
-:is(.dark) .hero-code .token-function   { color: #d4d4d8; }
-:is(.dark) .hero-code .token-comment    { color: #3f3f46; font-style: italic; }
-:is(.dark) .hero-code .token-punctuation{ color: #52525b; }
-:is(.dark) .hero-code .token-property   { color: #a1a1aa; }
+/* Dark Theme */
+:is(.dark) .hero-code .token-keyword    { color: #d8b4fe; font-weight: 600; text-shadow: 0 0 10px rgba(216, 180, 254, 0.3); }
+:is(.dark) .hero-code .token-string     { color: #6ee7b7; text-shadow: 0 0 10px rgba(110, 231, 183, 0.3); }
+:is(.dark) .hero-code .token-function   { color: #93c5fd; text-shadow: 0 0 10px rgba(147, 197, 253, 0.3); }
+:is(.dark) .hero-code .token-comment    { color: #475569; font-style: italic; }
+:is(.dark) .hero-code .token-punctuation{ color: #94a3b8; }
+:is(.dark) .hero-code .token-property   { color: #fdba74; }
+:is(.dark) .hero-code .token-text       { color: #f8fafc; }
 
 /* ─── Border Utility ──────────────────────────────────────────────────────── */
 

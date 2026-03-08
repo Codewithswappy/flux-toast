@@ -13,7 +13,6 @@ import {
 import {
   motion,
   useMotionValue,
-  useTransform,
   AnimatePresence,
   type PanInfo,
 } from "motion/react";
@@ -46,24 +45,73 @@ function NodeLinesPattern() {
             id="node-lines"
             x="0"
             y="0"
-            width="32"
-            height="32"
+            width="24"
+            height="24"
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(15)"
           >
-            <circle
-              cx="16"
-              cy="16"
-              r="1.5"
-              className="flux-toast-pattern-dot"
-            />
             <path
-              d="M16 16L32 32M16 16L0 0M16 16L32 0M16 16L0 32"
-              className="flux-toast-pattern-line"
+              d="M 24 0 L 0 0 0 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeDasharray="1 3"
             />
+            <circle cx="0" cy="0" r="1.5" fill="currentColor" />
           </pattern>
+          <radialGradient id="fade-mask" cx="0%" cy="50%" r="100%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
         </defs>
-        <rect x="0" y="0" width="100%" height="100%" fill="url(#node-lines)" />
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="url(#node-lines)"
+          mask="url(#fade-mask)"
+          className="flux-toast-pattern-rect"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function DotsPattern() {
+  return (
+    <div className="flux-toast-pattern" aria-hidden="true">
+      <svg width="100%" height="100%">
+        <defs>
+          <pattern
+            id="dots"
+            x="0"
+            y="0"
+            width="24"
+            height="24"
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Primary dots */}
+            <circle cx="2" cy="2" r="1" fill="currentColor" opacity="0.8" />
+            <circle cx="14" cy="14" r="1.5" fill="currentColor" opacity="0.4" />
+            {/* Secondary tiny dots for texture */}
+            <circle cx="20" cy="4" r="0.5" fill="currentColor" opacity="0.3" />
+            <circle cx="6" cy="18" r="0.5" fill="currentColor" opacity="0.3" />
+          </pattern>
+          <radialGradient id="fade-mask-dots" cx="20%" cy="30%" r="100%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="url(#dots)"
+          mask="url(#fade-mask-dots)"
+          className="flux-toast-pattern-rect"
+        />
       </svg>
     </div>
   );
@@ -224,38 +272,7 @@ function CloseIcon() {
   );
 }
 
-function ChevronDownIcon() {
-  return (
-    <svg
-      className="flux-toast-chevron-icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 9l6 6l6 -6" />
-    </svg>
-  );
-}
-
-function ChevronUpIcon() {
-  return (
-    <svg
-      className="flux-toast-chevron-icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 15l6 -6l6 6" />
-    </svg>
-  );
-}
-
+// NO CHEVRONS NEEDED
 const ICON_MAP: Record<string, () => React.ReactNode> = {
   success: SuccessIcon,
   error: ErrorIcon,
@@ -277,19 +294,12 @@ export const ToastItem = memo(function ToastItem({
   position,
   onDismiss,
 }: ToastItemProps) {
-  const { headless } = useToastContext();
+  const { headless, pattern } = useToastContext();
   const toastRef = useRef<HTMLDivElement>(null);
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
 
   const isHorizontal = position.includes("right") || position.includes("left");
-
-  const dragValue = isHorizontal ? dragX : dragY;
-  const opacity = useTransform(
-    dragValue,
-    [-120, -80, 0, 80, 120],
-    [0, 1, 1, 1, 0],
-  );
 
   // ─── Enter / Exit animation ────────────────────────────────────────
   const enterAnim = getEnterAnimation(position);
@@ -304,6 +314,14 @@ export const ToastItem = memo(function ToastItem({
     () => toast.duration ?? toastStore.getState().defaultDuration,
   );
 
+  useEffect(() => {
+    if (isExpandable) {
+      const timer = setTimeout(() => {
+        setExpanded(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isExpandable]);
   // ─── Hover pause ───────────────────────────────────────────────────
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -331,7 +349,7 @@ export const ToastItem = memo(function ToastItem({
       if (rem !== null) {
         setRemainingTime(rem);
       }
-    }, 50);
+    }, 100); // 100ms is plenty for text updates and smooth enough for progress
 
     return () => clearInterval(interval);
   }, [toast.id, isStopped, toast.duration]);
@@ -429,7 +447,7 @@ export const ToastItem = memo(function ToastItem({
   const classNames = [
     "flux-toast",
     `flux-toast--${toast.type}`,
-    expanded ? "flux-toast--expanded" : "",
+    `flux-toast--pattern-${pattern}`,
     toast.className,
     headless ? "flux-toast--headless" : "",
   ]
@@ -444,8 +462,7 @@ export const ToastItem = memo(function ToastItem({
       aria-live={getAriaLive(toast.type)}
       aria-atomic="true"
       tabIndex={0}
-      layout
-      layoutId={toast.id}
+      layout="position"
       initial={enterAnim.initial}
       animate={enterAnim.animate}
       exit={exitAnim.exit}
@@ -457,14 +474,14 @@ export const ToastItem = memo(function ToastItem({
       dragElastic={0.5}
       dragSnapToOrigin
       onDragEnd={handleDragEnd}
-      style={{ opacity, x: dragX, y: dragY }}
       // Hover
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       // Keyboard
       onKeyDown={handleKeyDown}
     >
-      <NodeLinesPattern />
+      {pattern === "dash-node" && <NodeLinesPattern />}
+      {pattern === "dots" && <DotsPattern />}
 
       <div className="flux-toast-header">
         {/* Icon */}
@@ -497,22 +514,7 @@ export const ToastItem = memo(function ToastItem({
           </motion.span>
         )}
 
-        {/* Expand/Collapse */}
-        {isExpandable && (
-          <button
-            className="flux-toast-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              setExpanded(!expanded);
-            }}
-            aria-label={
-              expanded ? "Collapse notification" : "Expand notification"
-            }
-            type="button"
-          >
-            {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          </button>
-        )}
+        {/* No Expand/Collapse buttons anymore */}
 
         {/* Close button */}
         {toast.dismissible !== false && (
@@ -530,13 +532,14 @@ export const ToastItem = memo(function ToastItem({
         )}
       </div>
 
-      <AnimatePresence initial={false}>
-        {expanded && (
+      <AnimatePresence>
+        {isExpandable && expanded && (
           <motion.div
+            key="flux-body"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             className="flux-toast-body-wrapper"
           >
             <div className="flux-toast-body">
@@ -561,11 +564,10 @@ export const ToastItem = memo(function ToastItem({
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
 
-      <AnimatePresence initial={false}>
         {showTimers && (
           <motion.div
+            key="flux-footer"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -583,12 +585,10 @@ export const ToastItem = memo(function ToastItem({
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
 
-      {/* Progress bar placed at the bottom absolute, elapsed time growing from 0 */}
-      <AnimatePresence initial={false}>
         {showTimers && (
           <motion.div
+            key="flux-progress"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

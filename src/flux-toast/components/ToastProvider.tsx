@@ -8,7 +8,11 @@ import {
   type ReactNode,
 } from "react";
 import { toastStore } from "../core/store";
-import type { ToastProviderProps, ToastPosition } from "../core/types";
+import type {
+  ToastProviderProps,
+  ToastPosition,
+  ToastPattern,
+} from "../core/types";
 
 // ─── Context ─────────────────────────────────────────────────────────────────
 
@@ -17,6 +21,7 @@ interface ToastContextValue {
   headless: boolean;
   gap: number;
   theme: "light" | "dark" | "system";
+  pattern: ToastPattern;
 }
 
 const ToastContext = createContext<ToastContextValue>({
@@ -24,6 +29,7 @@ const ToastContext = createContext<ToastContextValue>({
   headless: false,
   gap: 12,
   theme: "system",
+  pattern: "dash-node",
 });
 
 export const useToastContext = () => useContext(ToastContext);
@@ -38,6 +44,7 @@ export function ToastProvider({
   headless = false,
   gap = 12,
   theme = "system",
+  pattern = "none",
   groupDuplicates = true,
 }: ToastProviderProps) {
   // Configure store on mount and when props change
@@ -48,12 +55,13 @@ export function ToastProvider({
       position,
       groupDuplicates,
       theme,
+      pattern,
     });
-  }, [maxVisible, defaultDuration, position, groupDuplicates, theme]);
+  }, [maxVisible, defaultDuration, position, groupDuplicates, theme, pattern]);
 
   const contextValue = useMemo<ToastContextValue>(
-    () => ({ position, headless, gap, theme }),
-    [position, headless, gap, theme],
+    () => ({ position, headless, gap, theme, pattern }),
+    [position, headless, gap, theme, pattern],
   );
 
   return (

@@ -23,6 +23,13 @@ dist/
 tsconfig.tsbuildinfo
 next-env.d.ts
 *.tgz
+skills-lock.json
+
+# misc
+.DS_Store
+*.log
+.DS_Store
+
 
 # local env
 .env

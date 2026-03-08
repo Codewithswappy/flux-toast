@@ -15,6 +15,7 @@ export const toastStore = createStore<ToastStoreState>((set) => ({
   position: "bottom-right",
   groupDuplicates: true,
   theme: "system",
+  pattern: "dash-node",
 
   configure: (config) => set(config),
 

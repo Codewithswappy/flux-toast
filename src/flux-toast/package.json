@@ -1,6 +1,6 @@
 {
   "name": "flux-toast",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Beautiful, accessible, and performant toast notifications for React. TypeScript-first, SSR-safe, motion-powered.",
   "author": "Codewithswappy",
   "license": "MIT",
